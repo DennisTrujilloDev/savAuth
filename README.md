@@ -6,7 +6,7 @@ Log in to post on the 21 Savage message board.
 Tech Used: HTML, CSS, JavaScript, DB Mongo, Express, React 
 
 How It's Made: 
-This application uses the four CRUD methods (create, read, update and delete), communicating between the browser, the database, and the server to display messages created by the user. 
+This application uses the four CRUD methods (create, read, update and delete), communicating between the client side, the database, and the server to display messages created by the user. 
 
 What I learned:
 I learned how to use passport in order to utilize user authentication.  
