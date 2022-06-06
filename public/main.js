@@ -6,15 +6,14 @@ Array.from(thumbUp).forEach(function(element) {
       element.addEventListener('click', function(){
         const name = this.parentNode.parentNode.childNodes[1].innerText
         const msg = this.parentNode.parentNode.childNodes[3].innerText
-        const likes = parseFloat(this.parentNode.parentNode.childNodes[5].innerText)
+        const likes = Number(this.parentNode.parentNode.childNodes[5].innerText)
         fetch('messages', {
           method: 'put',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
             'name': name,
             'msg': msg,
-            'likes':likes,
-            'action':'like'
+            'thumbUp':likes,
           })
         })
         .then(response => {
@@ -32,14 +31,14 @@ Array.from(thumbDown).forEach(function(element) {
     const name = this.parentNode.parentNode.childNodes[1].innerText
     const msg = this.parentNode.parentNode.childNodes[3].innerText
     const likes = parseFloat(this.parentNode.parentNode.childNodes[5].innerText)
+    console.log("thumbdown", name, msg, likes);
     fetch('thumbsDown', {
       method: 'put',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         'name': name,
         'msg': msg,
-        'likes': likes,
-        'action': 'dislike'
+        'thumbUp': likes,
       })
     })
     .then(response => {
@@ -56,6 +55,7 @@ Array.from(trash).forEach(function(element) {
       element.addEventListener('click', function(){
         const name = this.parentNode.parentNode.childNodes[1].innerText
         const msg = this.parentNode.parentNode.childNodes[3].innerText
+        console.log("trash", name, msg)
         fetch('messages', {
           method: 'delete',
           headers: {

@@ -9,7 +9,6 @@ module.exports = function(app, passport, db) {
 
     // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function(req, res) {
-      // console.log(db)
         db.collection('messages').find().toArray((err, result) => {
           if (err) return console.log(err)
           res.render('profile.ejs', {
@@ -28,7 +27,8 @@ module.exports = function(app, passport, db) {
 // message board routes ===============================================================
 
     app.post('/messages', (req, res) => {
-      db.collection('messages').insertOne({name: req.body.name, msg: req.body.msg, thumbUp: 0, thumbDown:0}, (err, result) => {
+      db.collection('messages').insertOne({name: req.body.name, msg: req.body.msg, thumbUp: 0}, (err, result) => {
+        // , thumbDown:0 was above after thumbUp
         if (err) return console.log(err)
         console.log('saved to database')
         res.redirect('/profile')
@@ -36,14 +36,15 @@ module.exports = function(app, passport, db) {
     })
 
     app.put('/messages', (req, res) => {
+      console.log("thumbUp", req.body.thumbUp);
       db.collection('messages')
       .findOneAndUpdate({name: req.body.name, msg: req.body.msg}, {
         $set: {
-          thumbUp:req.body.likes + 1
+          thumbUp:req.body.thumbUp + 1
         }
       }, {
         sort: {_id: -1},
-        upsert: true
+        // upsert: true
       }, (err, result) => {
         if (err) return res.send(err)
         res.send(result)
@@ -51,15 +52,15 @@ module.exports = function(app, passport, db) {
     })
 
     app.put('/thumbsDown', (req, res) => {
-      console.log(req.body)
+      // console.log("ID  name: req.body.name, msg: req.body.msg)
       db.collection('messages')
       .findOneAndUpdate({name: req.body.name, msg: req.body.msg}, {
         $set: {
-          thumbUp:req.body.likes - 1
+          thumbUp:req.body.thumbUp - 1
         }
       }, {
         sort: {_id: -1},
-        upsert: true
+        // upsert: true
       }, (err, result) => {
         if (err) return res.send(err)
         res.send(result)
